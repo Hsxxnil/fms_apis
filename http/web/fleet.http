@@ -1,0 +1,50 @@
+### login
+POST {{host}}/fms/web/v1.0/login
+Content-Type: application/json
+
+{
+  "fleet_code": "A12345",
+  "user_name": "admin",
+  "password": "12345"
+}
+
+> {% client.global.set("accessToken", response.body.body.access_token); %}
+
+### GetByList
+GET {{host}}/fms/web/v1.0/fleets?page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### GetByListNoPagination
+GET {{host}}/fms/web/v1.0/fleets/no-pagination
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### GetBySingle
+GET {{host}}/fms/web/v1.0/fleets/c2d40ef0-341a-4793-b1b3-f4e4f82ba9f2
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### Create
+POST {{host}}/fms/web/v1.0/fleets
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "多那之",
+  "fleet_code": "B12345"
+}
+
+### Update
+PATCH {{host}}/fms/web/v1.0/fleets/0c1668c9-ecd7-442c-ab94-ecefa377eec9
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "admin"
+}
+
+### Delete
+DELETE {{host}}/fms/web/v1.0/fleets/5ed8fb9c-dc87-49a6-b4f9-4d54b01ac04a
+Accept: application/json
+Authorization: Bearer {{accessToken}}

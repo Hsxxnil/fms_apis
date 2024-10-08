@@ -1,0 +1,1 @@
+drop table ch68_d1_data;

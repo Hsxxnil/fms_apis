@@ -1,0 +1,20 @@
+### login
+POST {{host}}/fms/app/v1.0/login
+Content-Type: application/json
+
+{
+  "fleet_code": "A12345",
+  "user_name": "admin",
+  "password": "12345"
+}
+
+> {% client.global.set("refreshToken", response.body.body.refresh_token); %}
+
+### refresh
+POST {{host}}/fms/app/v1.0/refresh
+Content-Type: application/json
+
+{
+  "refresh_token": "{{refreshToken}}"
+}
+

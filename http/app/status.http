@@ -1,0 +1,45 @@
+### login
+POST {{host}}/fms/app/v1.0/login
+Content-Type: application/json
+
+{
+  "fleet_code": "A12345",
+  "user_name": "admin",
+  "password": "12345"
+}
+
+> {% client.global.set("accessToken", response.body.body.access_token); %}
+
+### GetByList
+GET {{host}}/fms/app/v1.0/statuses?page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### GetBySingle
+GET {{host}}/fms/app/v1.0/statuses/1630fe6c-47e5-4fc6-88d6-3507fe2c01e9
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### Create
+POST {{host}}/fms/app/v1.0/statuses
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "status": "行駛",
+  "fleet_id": "c2d40ef0-341a-4793-b1b3-f4e4f82ba9f2"
+}
+
+### Update
+PATCH {{host}}/fms/app/v1.0/statuses/006d4bdd-e9aa-4861-8ca3-58e7311ef3fd
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "車A"
+}
+
+### Delete
+DELETE {{host}}/fms/app/v1.0/statuses/006d4bdd-e9aa-4861-8ca3-58e7311ef3fd
+Accept: application/json
+Authorization: Bearer {{accessToken}}

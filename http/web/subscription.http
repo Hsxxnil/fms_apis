@@ -1,0 +1,43 @@
+### login
+POST {{host}}/fms/web/v1.0/login
+Content-Type: application/json
+
+{
+  "fleet_code": "A12345",
+  "user_name": "admin",
+  "password": "12345"
+}
+
+> {%
+    client.global.set("accessToken", response.body.body.access_token);
+%}
+
+### ActionPay
+POST {{host}}/fms/web/v1.0/subscriptions/action-pay
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 5,
+  "description": "test"
+}
+
+### Query
+POST {{host}}/fms/web/v1.0/subscriptions/query
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 1,
+  "merchant_order_no": "1698650491"
+}
+
+### CancelAuth
+POST {{host}}/fms/web/v1.0/subscriptions/credit-card/cancel
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "amount": 1,
+  "merchant_order_no": "1698650491"
+}

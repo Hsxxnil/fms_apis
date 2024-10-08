@@ -1,0 +1,1 @@
+drop index uidx_gps_devices_sid;

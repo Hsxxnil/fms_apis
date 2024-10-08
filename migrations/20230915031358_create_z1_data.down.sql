@@ -1,0 +1,1 @@
+drop table z1_data;

@@ -1,0 +1,76 @@
+### login
+POST {{host}}/fms/web/v1.0/login
+Content-Type: application/json
+
+{
+  "fleet_code": "A12345",
+  "user_name": "admin",
+  "password": "12345"
+}
+
+> {% client.global.set("accessToken", response.body.body.access_token); %}
+
+### GetByList
+GET {{host}}/fms/web/v1.0/transport-orders?page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### GetBySingle
+GET {{host}}/fms/web/v1.0/transport-orders/3335ec4d-0584-4d18-b3ed-6dc169891c8d
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### Create
+POST {{host}}/fms/web/v1.0/transport-orders
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "A",
+  "code": "231101",
+  "origin": "台中",
+  "destination": "台北",
+  "client_id": "e11b5328-8603-4823-9f52-6e2e57c7af58",
+  "deadline": "2020-12-31T16:00:00.000Z",
+  "shipping_list": [
+    {
+      "product_name": "A-1",
+      "trailer_id": "98ab5e6b-fa3a-4e0c-9e01-24c0966b3857"
+    },
+    {
+      "product_name": "A-2",
+      "trailer_id": "ffb47b95-16c0-468b-b0e3-71609a5a4c91"
+    }
+  ]
+}
+
+### Update
+PATCH {{host}}/fms/web/v1.0/transport-orders/eec7adb3-d0aa-47be-a21f-c94fbbf7d0f4
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "name": "A",
+  "code": "231101",
+  "origin": "台中",
+  "destination": "台北",
+  "client_id": "c8cef6e8-6f52-4cf6-ab19-9f040f3c6211",
+  "deadline": "2020-12-31T16:00:00.000Z",
+  "shipping_list": [
+    {
+      "product_name": "A-1",
+      "transport_order_id": "4c7078ec-aa3b-4bcb-9183-a8833dc9fe26",
+      "trailer_id": "4a7e5755-0fa1-4c06-a38d-5f01cac8ab71"
+    },
+    {
+      "product_name": "A-2",
+      "transport_order_id": "4c7078ec-aa3b-4bcb-9183-a8833dc9fe26",
+      "trailer_id": "4a7e5755-0fa1-4c06-a38d-5f01cac8ab71"
+    }
+  ]
+}
+
+### Delete
+DELETE {{host}}/fms/web/v1.0/transport-orders/4c7078ec-aa3b-4bcb-9183-a8833dc9fe26
+Accept: application/json
+Authorization: Bearer {{accessToken}}

@@ -1,0 +1,3 @@
+drop index idx_ch68_d1_data_date_time;
+drop index idx_ch68_d1_data_server_time;
+drop index idx_ch68_d1_data_sid;

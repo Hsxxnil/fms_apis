@@ -1,0 +1,56 @@
+### login
+POST {{host}}/fms/web/v1.0/login
+Content-Type: application/json
+
+{
+  "fleet_code": "A12345",
+  "user_name": "admin",
+  "password": "12345"
+}
+
+> {% client.global.set("accessToken", response.body.body.access_token); %}
+
+### GetByList
+GET {{host}}/fms/web/v1.0/transport-tasks?page=1&limit=20
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### GetBySingle
+GET {{host}}/fms/web/v1.0/transport-tasks/a1324e21-6ab1-4bc9-a08b-8010184713c6
+Accept: application/json
+Authorization: Bearer {{accessToken}}
+
+### Create
+POST {{host}}/fms/web/v1.0/transport-tasks
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "test1",
+  "driver_id": "e736e491-bb3d-4679-8b61-31cf2324a1db",
+  "vehicle_id": "acfc81c9-8bed-4b1d-aa1b-b2f78768af3c",
+  "form": [
+    "3335ec4d-0584-4d18-b3ed-6dc169891c8d",
+    "a0574f0e-ee94-40c6-a8f0-5561c2e52d0a"
+  ]
+}
+
+### Update
+PATCH {{host}}/fms/web/v1.0/transport-tasks/b92ac44d-b566-4ec9-a6a3-e2ed71517b83
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "test",
+  "driver_id": "e736e491-bb3d-4679-8b61-31cf2324a1db",
+  "vehicle_id": "acfc81c9-8bed-4b1d-aa1b-b2f78768af3c",
+  "from": [
+    "3335ec4d-0584-4d18-b3ed-6dc169891c8d",
+    "a0574f0e-ee94-40c6-a8f0-5561c2e52d0a"
+  ]
+}
+
+### Delete
+DELETE {{host}}/fms/web/v1.0/transport-tasks/217613e8-3883-46df-9a1d-ab4593ad7c38
+Accept: application/json
+Authorization: Bearer {{accessToken}}
