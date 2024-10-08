@@ -1,11 +1,3 @@
-alter index ch68_d1_data_pkey rename to poison_data_pkey;
-
-alter index idx_ch68_d1_data_date_time rename to idx_poison_data_date_time;
-
-alter index idx_ch68_d1_data_server_time rename to idx_poison_data_server_time;
-
-alter index idx_ch68_d1_data_sid rename to idx_poison_data_sid;
-
-alter table ch68_d1_data
-    rename to poison_data;
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:2f08b095c63f446c4159a6f1e6fedc109d010edbe51a69814fd6b252ace12957
+size 335

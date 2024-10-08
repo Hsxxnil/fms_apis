@@ -1,8 +1,3 @@
-create index idx_z1_data_date_time
-    on z1_data (date_time desc);
-
-create index idx_z1_data_server_time
-    on z1_data (server_time desc);
-
-create index idx_z1_data_sid
-    on z1_data using gin (sid gin_trgm_ops);
+version https://git-lfs.github.com/spec/v1
+oid sha256:ff83db3614c6ec5067c697a128b890b75919e5df07fea6dd9dcedfdba488b94b
+size 215

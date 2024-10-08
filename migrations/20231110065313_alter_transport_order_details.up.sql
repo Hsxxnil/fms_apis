@@ -1,10 +1,3 @@
-alter table transport_order_details
-    rename column goods_name to product_name;
-
-alter index idx_transport_order_details_goods rename to idx_transport_order_details_product_name;
-
-alter table transport_order_details
-    add trailer_id uuid references trailers (id);
-
-create index idx_transport_order_details_trailer_id
-    on transport_order_details using hash (trailer_id);
+version https://git-lfs.github.com/spec/v1
+oid sha256:a2c2c0696a858e9805a3606a37286303b0be7bd4b68ffa224a7072c60c4017ce
+size 376
