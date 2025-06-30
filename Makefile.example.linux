@@ -3,43 +3,35 @@ PROJECT = $(shell pwd)
 GO = $(shell which go)
 OUTPUTS = $(shell pwd)/deploy
 TAG ?= debug
+LAMBDAS =
 
-## 首次使用專案模版時必要執行的指令
-setup: update_lib
-	cp $(PROJECT)/config/config.go.example $(PROJECT)/config/develop_config.go
-	#cp $(PROJECT)/config/config.go.example $(PROJECT)/config/production_config.go
+## 首次使用專案模版時, 必要執行一次
+setup: 
+	cp $(PROJECT)/config/config.go.example $(PROJECT)/config/debug_config.go
+	# cp $(PROJECT)/config/config.go.example $(PROJECT)/config/production_config.go
 	cp $(PROJECT)/air.example.linux $(PROJECT)/.air.toml
 
 ## 映射遠端Ports至本地端Ports
 ssh:
 	go run -tags $(TAG) $(PROJECT)/tools/ssh/ssh.go
 
-## 地端執行專案
+## 開發中
 air:
 	air
 
-## 執行migration
 migration:
 	go run -tags $(TAG) $(PROJECT)/tools/migration/migration.go
 
-## 更新套件
-update_lib:
-	#brew install golang-migrate
-	#brew install golangci-lint
-	#brew install protobuf
-	#go get -u github.com/golang/protobuf/protoc-gen-go
-	# path: /opt/homebrew/bin/golangci-lint
-	go install github.com/swaggo/swag/cmd/swag@latest
-	go install github.com/cosmtrek/air@latest
-	go get -u
-	#go get -u ...
-
+## by Fleet
 format:
 	goimports -w $(PROJECT)
 
-authority:
-	GOOS=linux GOARCH=amd64 $(GO) build -tags $(TAG) -o $(OUTPUTS)/authority cmd/lambda/authority.go
-	zip -D -j -r $(OUTPUTS)/authority.zip $(OUTPUTS)/authority
+## 以下由CI/CD人員維護!!!
+$(LAMBDAS):
+	GOOS=linux GOARCH=amd64 $(GO) build -tags $(TAG) -o $(OUTPUTS)/$@ cmd/lambda/$@.go
+	zip -D -j -r $(OUTPUTS)/$@.zip $(OUTPUTS)/$@
+
+build-lambdas: $(LAMBDAS)
 
 clean:
 	rm -rf $(OUTPUTS)
@@ -50,3 +42,10 @@ task:
 
 changeLog:
 	git-chglog > ./changeLog.md
+
+update_lib:
+	# brew install golang-migrate golangci-lint protobuf
+	go install github.com/swaggo/swag/cmd/swag@latest
+	go install github.com/air-verse/air@latest
+	go get -u ./...
+	go mod tidy
