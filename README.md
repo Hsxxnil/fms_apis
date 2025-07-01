@@ -5,7 +5,7 @@
 ## 專案連結
 
 * 前端畫面：[點我查看](https://hsxxnil.notion.site/FMS-11c5b51f95f581669849fe01de74b605)
-* Swagger API 文件：[點我查看](https://hsxxnil.github.io/swagger-ui/?urls.primaryName=FMS)
+* Swagger API 文件：[點我查看](https://hsxxnil.github.io/swagger-ui/?urls.primaryName=FMS1)
 
 ## 安裝
 1. 下載專案
