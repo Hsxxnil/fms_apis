@@ -13862,9 +13862,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "0.1",
-	Host:             "fmp.t.api.jinher-net.com",
+	Host:             "localhost:8080",
 	BasePath:         "/fms",
-	Schemes:          []string{"https"},
+	Schemes:          []string{"http"},
 	Title:            "FMS APIs",
 	Description:      "FMS APIs",
 	InfoInstanceName: "swagger",

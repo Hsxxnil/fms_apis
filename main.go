@@ -45,9 +45,9 @@ import (
 //	@license.name	AGPL 3.0
 //	@license.url	https://www.gnu.org/licenses/agpl-3.0.en.html
 
-// @host fmp.t.api.jinher-net.com
+// @host localhost:8080
 // @BasePath	/fms
-// @schemes	https
+// @schemes	http
 func main() {
 	db, err := connect.PostgresSQL()
 	if err != nil {

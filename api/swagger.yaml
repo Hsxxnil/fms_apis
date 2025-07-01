@@ -2032,7 +2032,7 @@ definitions:
         description: 車重(噸)
         type: string
     type: object
-host: fmp.t.api.jinher-net.com
+host: localhost:8080
 info:
   contact: {}
   description: FMS APIs
@@ -8310,5 +8310,5 @@ paths:
       tags:
       - vehicle
 schemes:
-- https
+- http
 swagger: "2.0"
