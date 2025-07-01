@@ -3,6 +3,7 @@ package payment
 import (
 	"encoding/hex"
 	"encoding/json"
+	"fms/config"
 	payModel "fms/internal/interactor/models/payments"
 	subscriptionModel "fms/internal/interactor/models/subscriptions"
 	"fms/internal/interactor/pkg/util/encryption"
@@ -15,18 +16,15 @@ import (
 )
 
 var (
-	key       = "REMOVED"
-	iv        = "REMOVED"
-	mid       = "REMOVED"
-	returnUrl = "https://fmp.t.api.jinher-net.com/fms/web/v1.0/subscriptions/redirect"
-	notifyUrl = "https://fmp.t.api.jinher-net.com/fms/web/v1.0/subscriptions/check"
+	returnUrl  = fmt.Sprintf("%s/fms/web/v1.0/subscriptions/redirect", config.Domain)
+	notifyUrl  = fmt.Sprintf("%s/fms/web/v1.0/subscriptions/check", config.Domain)
 )
 
 // ActionPay is used to newebpay api NPA-F01.
 func ActionPay(input *subscriptionModel.ActionPay) (*payModel.PayJson, error) {
 	taiwanTimeZone, _ := time.LoadLocation("Asia/Taipei")
 	tradeInfo := payModel.UnencryptedData{
-		MerchantID:      mid,
+		MerchantID:      config.PaymentMid,
 		RespondType:     "JSON",
 		TimeStamp:       time.Now().In(taiwanTimeZone).Unix(),
 		Version:         "2.0",
@@ -54,19 +52,19 @@ func ActionPay(input *subscriptionModel.ActionPay) (*payModel.PayJson, error) {
 	sortedStr := SortMapToString(tradeInfoMap)
 
 	// 將請求字串使用AES-256-CBC(PKCS7填充)加密
-	encrypted, err := encryption.AesEncryptCBC([]byte(sortedStr), []byte(key), []byte(iv))
+	encrypted, err := encryption.AesEncryptCBC([]byte(sortedStr), []byte(config.PaymentKey), []byte(config.PaymentIv))
 	if err != nil {
 		return nil, err
 	}
 	encryptedStr := hex.EncodeToString(encrypted)
 
 	// 將AES加密字串產生檢查碼
-	hashes := fmt.Sprintf("HashKey=%s&%s&HashIV=%s", key, encryptedStr, iv)
+	hashes := fmt.Sprintf("HashKey=%s&%s&HashIV=%s", config.PaymentKey, encryptedStr, config.PaymentIv)
 	hashStr := strings.ToUpper(hash.Sha256(hashes))
 
 	// 回傳加密資訊
 	apiBody := &payModel.PayJson{
-		MerchantID: mid,
+		MerchantID: config.PaymentMid,
 		Version:    "2.0",
 		TradeInfo:  encryptedStr,
 		TradeSha:   hashStr,
@@ -78,7 +76,7 @@ func ActionPay(input *subscriptionModel.ActionPay) (*payModel.PayJson, error) {
 // Query is used to newebpay api NPA-B02.
 func Query(input *subscriptionModel.Query) (*payModel.QueryJson, error) {
 	query := payModel.UnencryptedData{
-		MerchantID:      mid,
+		MerchantID:      config.PaymentMid,
 		MerchantOrderNo: input.MerchantOrderNo,
 		Amt:             input.Amount,
 	}
@@ -98,13 +96,13 @@ func Query(input *subscriptionModel.Query) (*payModel.QueryJson, error) {
 	sortedStr := SortMapToString(queryMap)
 
 	// 將AES加密字串產生檢查碼
-	hashes := fmt.Sprintf("IV=%s&%s&Key=%s", iv, sortedStr, key)
+	hashes := fmt.Sprintf("IV=%s&%s&Key=%s", config.PaymentIv, sortedStr, config.PaymentKey)
 	hashStr := strings.ToUpper(hash.Sha256(hashes))
 
 	// 回傳加密資訊
 	taiwanTimeZone, _ := time.LoadLocation("Asia/Taipei")
 	apiBody := &payModel.QueryJson{
-		MerchantID:      mid,
+		MerchantID:      config.PaymentMid,
 		Version:         "1.3",
 		RespondType:     "JSON",
 		CheckValue:      hashStr,
@@ -124,7 +122,7 @@ func GetPayResult(input *payModel.PayJson) (*payModel.Response, error) {
 	}
 
 	// 使用AES-256-CBC解密
-	decryptedBytes, err := encryption.AesDecryptCBC(encryptedBytes, []byte(key), []byte(iv))
+	decryptedBytes, err := encryption.AesDecryptCBC(encryptedBytes, []byte(config.PaymentKey), []byte(config.PaymentIv))
 	if err != nil {
 		return nil, err
 	}

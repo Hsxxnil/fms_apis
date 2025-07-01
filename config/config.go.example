@@ -22,4 +22,9 @@ const (
 	AccessPrivateKey  = ``
 	AccessPublicKey   = ``
 	GoogleMapKey      = ``
+	// Payment related configurations
+	PaymentKey = ""
+	PaymentIv  = ""
+	PaymentMid = ""
+	Domain = ""
 )
