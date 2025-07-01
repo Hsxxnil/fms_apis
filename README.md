@@ -1,235 +1,78 @@
-# 安裝
+# FMS APIs
 
-* 以下命令可以建議一些執行的sh檔跟設定檔
-* 根據作業系統重新命名 ./Makefile.[*] 為 Makefile
+一套以 **Golang** + **PostgreSQL** 為後端、**Angular** 為前端框架開發的 **車隊管理系統**，此系統提供即時追蹤、路線優化、車輛維護提醒等功能，提升車隊運營效率並降低成本，也確保車輛安全。
 
-```shell!
+## 專案連結
+
+* 前端畫面：[點我查看](https://hsxxnil.notion.site/FMS-11c5b51f95f581669849fe01de74b605)
+* Swagger API 文件：[點我查看](https://hsxxnil.github.io/swagger-ui/?urls.primaryName=FMS)
+
+## 安裝
+1. 下載專案
+
+```bash
+git clone https://github.com/Hsxxnil/fms_apis.git
+cd fms_apis
+```
+
+2. 建立 Makefile
+
+> 請根據您的作業系統選擇對應的範本進行複製：
+* Linux / macOS
+```bash
+cp Makefile.example.linux Makefile
+```
+
+* Windows
+```bash
+copy Makefile.example.windows Makefile
+```
+
+3. 初始化
+
+> 如為初次建立開發環境，請先根據您的作業系統安裝必要套件：
+* Linux / macOS
+```bash
+brew install golang-migrate golangci-lint protobuf
+```
+
+* Windows（建議使用 Scoop，或手動安裝以下套件）：
+```bash
+scoop install golang-migrate golangci-lint protobuf
+```
+
+> 執行以下指令將自動安裝依賴套件並建立必要的目錄結構：
+```bash
 make setup
 ```
 
-# 執行
+4. 設定環境參數
 
-```shell!
-make air
+> 開啟並編輯以下檔案，填入資料庫連線資訊、JWT 金鑰等必要參數：
+```file
+config/debug_config.go
 ```
 
-# 資料庫遷移
+5. 更新套件
 
-> 使用[golang-migrate](https://github.com/golang-migrate/migrate)做資料庫遷移及做資料表版控
+>執行以下指令升級相關套件
+```bash
+make update_lib
+```
 
-```shell!
+## 資料庫遷移
+
+> 執行以下指令使用[golang-migrate](https://github.com/golang-migrate/migrate)做資料庫遷移及做資料表版控：
+```bash
 make migration
 ```
 
-# 更新日誌檔
-
-* 可以產生change log
-
-```shell!
-make changeLog
+## 執行
+> 執行以下指令在本地端啟動伺服器並自動重載：
+```bash
+make air
 ```
 
----
+## License
 
-## 目錄結構
-
-```
-├── LICENSE
-├── fmp_dev.sql
-├── Makefile
-├── Makefile.example.linux
-├── Makefile.example.windows
-├── README.md
-├── air.example.linux
-├── air.example.windows
-├── api
-├── build
-│   └── circleci
-│       └── config.yml
-├── cmd
-├── config
-│   ├── config.go.example
-│   └── debug_config.go
-├── deploy
-├── docs
-├── go.mod
-├── go.sum
-├── http
-├── internal
-│   ├── entity
-│   │   ├── db
-│   ├── interactor
-│   │   ├── constants
-│   │   │   └── constants.go
-│   │   ├── helpers
-│   │   ├── manager
-│   │   ├── models
-│   │   │   ├── page
-│   │   │   │   └── page.go
-│   │   │   ├── section
-│   │   │   │   └── section.go
-│   │   │   └── special
-│   │   │       └── backend.go
-│   │   ├── service
-│   │   └── util
-│   │       ├── aes.go
-│   │       ├── base.go
-│   │       ├── code
-│   │       │   └── status.go
-│   │       ├── connect
-│   │       │   ├── mysql.go
-│   │       │   └── postgres.go
-│   │       ├── jwe.go
-│   │       ├── log
-│   │       │   └── log.go
-│   │       ├── page.go
-│   │       ├── time.go
-│   │       ├── util.go
-│   │       └── uuid.go
-│   ├── presenter
-│   └── router
-│       ├── middleware
-│       └── router.go
-├── main.go
-├── migrations
-└── tools
-    ├── autoMigrate
-    │   └── main.go
-    ├── log
-    │   └── run.go
-    └── testData
-        └── main.go
-```
-
-### LICENSE
-
-* 授權檔案 MIT License
-
-### fmp_dev.sql
-
-* 資料庫備份檔
-
-### Makefile.example.linux / Makefile.example.windows
-
-* 根據作業系統重新命名 ./Makefile.[*] 為 Makefile
-* 詳細記錄了,所有能夠使用的命令集
-
-### air.example.linux / air.example.windows
-
-* 熱加載設定檔
-
-### /api
-
-* API DOC 置放
-
-### /build
-
-* CI/CD 設定檔
-
-### /cmd
-
-* 本專案的主要應用程式
-
-### /config
-
-* 設定檔
-
-### /deploy
-
-* 被編譯過後的檔案
-
-### /docs
-
-* golang doc
-
-### go.mod
-
-* go mod檔
-
-### /http
-
-* restful api 測試文件
-
-### /internal
-
-* 私有應用程式和函式庫的程式碼,是你不希望其他人在其應用程式或函式庫中匯入的程式碼.
-
-### /internal/entity
-
-* 對應資料庫的CRUD
-
-### /internal/entity/db
-
-* 對應資料表結構檔
-
-### /internal/interactor
-
-* 可共用或不可共用的函式庫的程式碼
-
-### /internal/interactor/constants
-
-* 置放常數資料夾
-
-### /internal/interactor/helpers
-
-* 置放一些共用的manager
-
-### /internal/interactor/manager
-
-* 置放交互調度程式
-
-### /internal/interactor/models
-
-* 置放共用結構檔
-
-### /internal/interactor/models/page
-
-* 置放有關於分頁的結構檔
-
-### /internal/interactor/models/section
-
-* 置放有關於時間的結構檔
-
-### /internal/interactor/models/special
-
-* 置放有關於後端共用結構檔
-
-### /internal/interactor/service
-
-* 置放有關於所有的服務的程式碼
-
-### /internal/interactor/util
-
-* 置放一些小工具,實用程序
-
-### /internal/interactor/util/code
-
-* 置放錯誤代碼或是回應代碼
-
-### /internal/interactor/util/connect
-
-* 置放對應資料庫的連線
-
-### /internal/presenter
-
-* 對應前端第一接觸的地方,API文件註解的地方,驗證輸入的地方
-
-### /internal/router
-
-* 置放路由設定
-
-### main.go
-
-* main func
-
-### /migrations
-
-* 放置資料庫的SQL檔案
-
-### /tools
-
-* 可以置放一些小工具
-
-# License
-
-Vodka is released under the MIT license.
+本專案使用的 [Vodka](https://github.com/dylanlyu/vodka) 採用 [MIT License](https://opensource.org/licenses/MIT) 授權。
