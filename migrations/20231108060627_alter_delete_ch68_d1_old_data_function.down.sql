@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4af46953dc99809a6ef8451616905d16e874fc9bd222f92c5dad97b67217932d
-size 645
+drop function delete_poison_old_data();
+
+CREATE OR REPLACE FUNCTION delete_ch68_d1_old_data()
+    RETURNS SETOF ch68_d1_data as
+$$
+DECLARE
+    one_week_ago_date DATE;
+    current_sid       text;
+BEGIN
+    FOR current_sid IN SELECT DISTINCT sid FROM ch68_d1_data
+        LOOP
+            SELECT MAX(date_time) - INTERVAL '7 days'
+            INTO one_week_ago_date
+            FROM ch68_d1_data
+            WHERE sid = current_sid;
+
+            -- Delete old data
+            DELETE
+            FROM ch68_d1_data
+            WHERE sid = current_sid
+              AND date_time <= one_week_ago_date;
+        END LOOP;
+END;
+$$
+    LANGUAGE plpgsql;

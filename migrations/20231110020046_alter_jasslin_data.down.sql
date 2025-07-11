@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d4d6bdccb98f2de8dfd830b3dcb3867a07725bf6325a890c444f3f0e7ecb10e6
-size 195
+alter table jasslin_data
+    rename column driver_code to driver_id;
+
+alter table jasslin_data
+    rename column io_status to io;
+
+alter table jasslin_data
+    rename column gps_status to status;

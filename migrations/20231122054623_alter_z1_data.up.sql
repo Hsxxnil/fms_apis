@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0817ac4c9b8babdf2051275dbd09236511aa8954fd608c959ce71c0a12fa7196
-size 305
+alter table z1_data
+    rename to avema_data;
+
+alter index z1_data_pkey rename to avema_data_pkey;
+
+alter index idx_z1_data_date_time rename to idx_avema_data_date_time;
+
+alter index idx_z1_data_server_time rename to idx_avema_data_server_time;
+
+alter index idx_z1_data_sid rename to idx_avema_data_sid;
+

@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0436c4269d5a580e4c0d7c5b8cc01eeb92c90a275594ce29c189df53ca484021
-size 752
+CREATE TABLE trailers
+(
+    id         uuid      default uuid_generate_v4() not null
+        primary key,                                          -- 表ID
+    code       text                                 not null, -- 板台號碼
+    created_at timestamp default now(),
+    created_by uuid,
+    updated_at timestamp,
+    updated_by uuid,
+    deleted_at timestamp
+);
+
+create index idx_trailers_code
+    on trailers using gin (code gin_trgm_ops);
+
+create index idx_trailers_created_at
+    on trailers (created_at desc);
+
+create index idx_trailers_created_by
+    on trailers using hash (created_by);
+
+create index idx_trailers_updated_at
+    on trailers (updated_at desc);
+
+create index idx_trailers_updated_by
+    on trailers using hash (updated_by);
