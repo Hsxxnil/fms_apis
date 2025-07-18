@@ -61,3 +61,6 @@ config/*.go
 build/*.*
 tmp/*.*
 *.zip
+
+# others
+*.sql
